@@ -5,21 +5,20 @@ main()
     while true
     do
 	wait_until_next_swap $@
-	get_all_clients
-	send_change_message_to_all_clients
+	send_change_message_to $(all_clients)
     done
 }
 
-get_all_clients()
+all_clients()
 {
-    CLIENTS=$(tmux list-clients | cut -d ':' -f 1)
+    tmux list-clients | cut -d ':' -f 1
 }
 
-send_change_message_to_all_clients()
+send_change_message_to()
 {
     for((x=10;x>0;x--))
     do
-	for CLIENT in ${CLIENTS}
+	for CLIENT in $@
 	do
 	    tmux display-message -c ${CLIENT} "[switch driver in: ${x} seconds]"
 	done
@@ -29,7 +28,7 @@ send_change_message_to_all_clients()
 
 wait_until_next_swap()
 {
-    sleep ${1}
+    sleep $@
 }
 
 main $@
