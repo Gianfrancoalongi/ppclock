@@ -1,5 +1,7 @@
 #!/bin/bash
 
+[[ $# != 1 ]] && echo "usage: $0 drive_time_in_minutes" && exit 1
+
 main()
 {
     while true
@@ -28,7 +30,7 @@ send_change_message_to()
 
 wait_until_next_swap()
 {
-    sleep $@
+    sleep $(($@ * 60 ))
 }
 
 main $@
